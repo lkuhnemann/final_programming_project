@@ -27,28 +27,28 @@ def load_game():
     try:
         with open("pet_data.json", "r") as f:
             pet = json.load(f)
-        print(f"🎉 Welcome back! {pet['name']} the {pet['type']} is waiting for you")
+        print(f"🎉 Welcome back! {pet['Name']} the {pet['Type']} is waiting for you")
     except FileNotFoundError:
         print("⚠️ No saved game found. Let's create a new pet for you to take care of!")
         create_pet()
 
 # Create a new pet and let the user choose its type (and making sure it is valid)
 def create_pet():
-    pet["name"] = input("🐾 Enter a name for your pet ").capitalize()
+    pet["Name"] = input("🐾 Enter a name for your pet ").capitalize()
     while True:
         pet_type = input(f"Choose a pet type {pet_types}: ").capitalize()
         if pet_type in pet_types:
-            pet["type"] = pet_type
+            pet["Type"] = pet_type
             break
         print("⚠️ Your choice is invalid, please choose a valid pet type")
-    print(f"🎉 You adopted {pet['name']} the {pet['type']}! Make sure you take good care of them!")
+    print(f"🎉 You adopted {pet['Name']} the {pet['Type']}! Make sure you take good care of them!")
 
 # Updating the pets statistics over time
 def update_statistics():
     if not pet["Alive"]:
         return
 
-    time_passed = time.time() - pet["last updated"]
+    time_passed = time.time() - pet["Last_updated"]
     decay_amount = int(time_passed // 10) # every 10 seconds the statistics decay
     if decay_amount > 0:
         pet["Hunger"] = min(100, pet["Hunger"] + decay_amount)
@@ -58,44 +58,44 @@ def update_statistics():
 
         if pet["Hunger"] >= 100 or pet["Health"] <= 0: # if hunger reaches 100 or health reaches 0, the pet dies
             pet["Alive"] =False
-            print(f"💀 {pet['name']} has died... You did not take proper care of them")
+            print(f"💀 {pet['Name']} has died... You did not take proper care of them")
 
 # Feeding the pet
 def feed_pet():
     update_statistics()
     pet["Hunger"] = max(0, pet["Hunger"] - 15)
     pet["Health"] = min(100, pet["Health"] + 5)
-    print(f"🍗 {pet['name']} has been fed. Hunger decreased and health improved") #lowers hunger and slightly improves health
+    print(f"🍗 {pet['Name']} has been fed. Hunger decreased and health improved") #lowers hunger and slightly improves health
 
 # Playing with the pet
 def play_with_pet():
     update_statistics()
     pet["Happiness"] += 10
     pet["Hunger"] += 5
-    print(f"🎾 {pet['name']} had some fun, happiness increased:). But now he is hungry") #increases happiness but makes the pet more hungry
+    print(f"🎾 {pet['Name']} had some fun, happiness increased:). But now he is hungry") #increases happiness but makes the pet more hungry
 
 # Cleaning the pet
 def clean_pet():
     update_statistics()
     pet["Health"] = min(100, pet["Health"] + 10) # improves the pets health by cleaning it
-    print(f"🧼 {pet['name']} is all clean and refreshed!")
+    print(f"🧼 {pet['Name']} is all clean and refreshed!")
 
 # Letting the pet sleep
 def let_pet_sleep():
     update_statistics()
     pet["Health"] = min(100, pet["Health"] + 15)
     pet["Hunger"] += 5
-    print(f"😴 {pet['name']} took a nice long nap.") # increases health but also slightly increases hunger
+    print(f"😴 {pet['Name']} took a nice long nap.") # increases health but also slightly increases hunger
 
 # Checking the pet's status
 def check_status():
     update_statistics()
     if not pet["Alive"]:
-        print(f"💀 You did not take care of {pet['name']}! {pet['name']} died! You need to start over:(")
+        print(f"💀 You did not take care of {pet['Name']}! {pet['Name']} died! You need to start over:(")
         return
 
 # display all the statistics of the pet
-    print(f"\n🐾 {pet['name']}'s status:")
+    print(f"\n🐾 {pet['Name']}'s status:")
     print(f"🍗 Hunger: {pet['Hunger']}")
     print(f"😊 Happiness: {pet['Happiness']}")
     print(f"❤️ Health: {pet['Health']}\n")
@@ -113,8 +113,44 @@ def introduction():
     print("\n Welcome to your Virtual Pet Simulator! 🎉")
     print("In this game you will adopt a pet of your choice and you will have to take care of it as if it is your own child!")
     print("Take care of your pet by feeding, playing, cleaning and letting it rest ")
-    print("But be careful! If you neglect your pet and don't look after it properly, it will die!!!!")
-    print("So make sure you are a good parent and look after your pet properly")
+    print("But be careful! If you neglect your pet and don't look after it properly, it will die!!!! 😢")
+    print("So make sure you are a good parent and look after your pet properly 👨‍👩‍👧")
     print("Save your progress and come back to check up on your pet regularly.")
     print("ENJOY😆")
+
+# Playing the game
+def main_menu():
+    introduction()
+    load_game()
+    while pet["Alive"]:
+        check_status()
+        print("1️⃣ Feed Pet")
+        print("2️⃣ Play with Pet")
+        print("3️⃣ Clean Pet")
+        print("4️⃣ Let Pet Sleep")
+        print("5️⃣ Do Nothing")
+        print("6️⃣ Save & Exit")
+
+        choice = input("Choose an action: ")
+        if choice == "1":
+            feed_pet()
+        elif choice == "2":
+            play_with_pet()
+        elif choice == "3":
+            clean_pet()
+        elif choice == "4":
+            let_pet_sleep()
+        elif choice == "5":
+            update_statistics()
+            print("⏳ Time passes... Your pet is waiting.")
+        elif choice == "6":
+            save_game()
+            print("👋 Game saved! See you next time!")
+            break
+        else:
+            print("⚠️ Invalid choice, try again!")
+
+if __name__ == "__main__":
+    main_menu()
+
 
