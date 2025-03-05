@@ -60,3 +60,61 @@ def update_statistics():
             pet["Alive"] =False
             print(f"💀 {pet['name']} has died... You did not take proper care of them")
 
+# Feeding the pet
+def feed_pet():
+    update_statistics()
+    pet["Hunger"] = max(0, pet["Hunger"] - 15)
+    pet["Health"] = min(100, pet["Health"] + 5)
+    print(f"🍗 {pet['name']} has been fed. Hunger decreased and health improved") #lowers hunger and slightly improves health
+
+# Playing with the pet
+def play_with_pet():
+    update_statistics()
+    pet["Happiness"] += 10
+    pet["Hunger"] += 5
+    print(f"🎾 {pet['name']} had some fun, happiness increased:). But now he is hungry") #increases happiness but makes the pet more hungry
+
+# Cleaning the pet
+def clean_pet():
+    update_statistics()
+    pet["Health"] = min(100, pet["Health"] + 10) # improves the pets health by cleaning it
+    print(f"🧼 {pet['name']} is all clean and refreshed!")
+
+# Letting the pet sleep
+def let_pet_sleep():
+    update_statistics()
+    pet["Health"] = min(100, pet["Health"] + 15)
+    pet["Hunger"] += 5
+    print(f"😴 {pet['name']} took a nice long nap.") # increases health but also slightly increases hunger
+
+# Checking the pet's status
+def check_status():
+    update_statistics()
+    if not pet["Alive"]:
+        print(f"💀 You did not take care of {pet['name']}! {pet['name']} died! You need to start over:(")
+        return
+
+# display all the statistics of the pet
+    print(f"\n🐾 {pet['name']}'s status:")
+    print(f"🍗 Hunger: {pet['Hunger']}")
+    print(f"😊 Happiness: {pet['Happiness']}")
+    print(f"❤️ Health: {pet['Health']}\n")
+
+# show warnings if the statistics of the pet are not good
+    if pet["Hunger"] >= 80:
+        print("⚠️ Your pet is very hungry! Feed them soon!")
+    if pet["Happiness"] <= 20:
+        print("😢 Your pet is sad! Play with them!")
+    if pet["Health"] <= 30:
+        print("⚠️ Your pet's health is low! Take care of them!")
+
+# introduction to the game
+def introduction():
+    print("\n Welcome to your Virtual Pet Simulator! 🎉")
+    print("In this game you will adopt a pet of your choice and you will have to take care of it as if it is your own child!")
+    print("Take care of your pet by feeding, playing, cleaning and letting it rest ")
+    print("But be careful! If you neglect your pet and don't look after it properly, it will die!!!!")
+    print("So make sure you are a good parent and look after your pet properly")
+    print("Save your progress and come back to check up on your pet regularly.")
+    print("ENJOY😆")
+
